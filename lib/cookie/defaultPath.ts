@@ -51,7 +51,7 @@ export function defaultPath(path?: Nullable<string>): string {
     return path
   }
 
-  const rightSlash = path.lastIndexOf('/')
+  let rightSlash = path.lastIndexOf('/')
   if (rightSlash === 0) {
     return '/'
   }
