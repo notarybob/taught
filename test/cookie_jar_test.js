@@ -29,14 +29,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 "use strict";
-let vows = require("vows");
-let assert = require("assert");
-let async = require("async");
-let tough = require("../dist/cookie");
-let Cookie = tough.Cookie;
-let CookieJar = tough.CookieJar;
+const vows = require("vows");
+const assert = require("assert");
+const async = require("async");
+const tough = require("../dist/cookie");
+const Cookie = tough.Cookie;
+const CookieJar = tough.CookieJar;
 
-let atNow = Date.now();
+const atNow = Date.now();
 
 function at(offset) {
   return { now: new Date(atNow + offset) };
@@ -48,8 +48,8 @@ vows
   .addBatch({
     "Setting a basic cookie": {
       topic: function() {
-        let cj = new CookieJar();
-        let c = Cookie.parse("a=b; Domain=example.com; Path=/");
+        const cj = new CookieJar();
+        const c = Cookie.parse("a=b; Domain=example.com; Path=/");
         assert.strictEqual(c.hostOnly, null);
         assert.instanceOf(c.creation, Date);
         assert.strictEqual(c.lastAccessed, null);
@@ -70,8 +70,8 @@ vows
     },
     "Setting a no-path cookie": {
       topic: function() {
-        let cj = new CookieJar();
-        let c = Cookie.parse("a=b; Domain=example.com");
+        const cj = new CookieJar();
+        const c = Cookie.parse("a=b; Domain=example.com");
         assert.strictEqual(c.hostOnly, null);
         assert.instanceOf(c.creation, Date);
         assert.strictEqual(c.lastAccessed, null);
@@ -90,8 +90,8 @@ vows
     },
     "Setting a cookie already marked as host-only": {
       topic: function() {
-        let cj = new CookieJar();
-        let c = Cookie.parse("a=b; Domain=example.com");
+        const cj = new CookieJar();
+        const c = Cookie.parse("a=b; Domain=example.com");
         assert.strictEqual(c.hostOnly, null);
         assert.instanceOf(c.creation, Date);
         assert.strictEqual(c.lastAccessed, null);
@@ -108,8 +108,8 @@ vows
     },
     "Setting a session cookie": {
       topic: function() {
-        let cj = new CookieJar();
-        let c = Cookie.parse("a=b");
+        const cj = new CookieJar();
+        const c = Cookie.parse("a=b");
         assert.strictEqual(c.path, null);
         cj.setCookie(c, "http://www.example.com/dir/index.html", this.callback);
       },
@@ -128,8 +128,8 @@ vows
     },
     "Setting wrong domain cookie": {
       topic: function() {
-        let cj = new CookieJar();
-        let c = Cookie.parse("a=b; Domain=fooxample.com; Path=/");
+        const cj = new CookieJar();
+        const c = Cookie.parse("a=b; Domain=fooxample.com; Path=/");
         cj.setCookie(c, "http://example.com/index.html", this.callback);
       },
       fails: function(err, c) {
@@ -139,8 +139,8 @@ vows
     },
     "Setting sub-domain cookie": {
       topic: function() {
-        let cj = new CookieJar();
-        let c = Cookie.parse("a=b; Domain=www.example.com; Path=/");
+        const cj = new CookieJar();
+        const c = Cookie.parse("a=b; Domain=www.example.com; Path=/");
         cj.setCookie(c, "http://example.com/index.html", this.callback);
       },
       fails: function(err, c) {
@@ -150,8 +150,8 @@ vows
     },
     "Setting super-domain cookie": {
       topic: function() {
-        let cj = new CookieJar();
-        let c = Cookie.parse("a=b; Domain=example.com; Path=/");
+        const cj = new CookieJar();
+        const c = Cookie.parse("a=b; Domain=example.com; Path=/");
         cj.setCookie(c, "http://www.app.example.com/index.html", this.callback);
       },
       success: function(err, c) {
@@ -161,8 +161,8 @@ vows
     },
     "Setting a sub-path cookie on a super-domain": {
       topic: function() {
-        let cj = new CookieJar();
-        let c = Cookie.parse("a=b; Domain=example.com; Path=/subpath");
+        const cj = new CookieJar();
+        const c = Cookie.parse("a=b; Domain=example.com; Path=/subpath");
         assert.strictEqual(c.hostOnly, null);
         assert.instanceOf(c.creation, Date);
         assert.strictEqual(c.lastAccessed, null);
@@ -181,8 +181,8 @@ vows
     },
     "Setting HttpOnly cookie over non-HTTP API": {
       topic: function() {
-        let cj = new CookieJar();
-        let c = Cookie.parse("a=b; Domain=example.com; Path=/; HttpOnly");
+        const cj = new CookieJar();
+        const c = Cookie.parse("a=b; Domain=example.com; Path=/; HttpOnly");
         cj.setCookie(
           c,
           "http://example.com/index.html",
@@ -197,8 +197,8 @@ vows
     },
     "Setting a basic IPv6 cookie": {
       topic: function() {
-        let cj = new CookieJar();
-        let c = Cookie.parse("a=b; Domain=[::1]; Path=/");
+        const cj = new CookieJar();
+        const c = Cookie.parse("a=b; Domain=[::1]; Path=/");
         assert.strictEqual(c.hostOnly, null);
         assert.instanceOf(c.creation, Date);
         assert.strictEqual(c.lastAccessed, null);
@@ -219,8 +219,8 @@ vows
     },
     "Setting a prefix IPv6 cookie": {
       topic: function() {
-        let cj = new CookieJar();
-        let c = Cookie.parse("a=b; Domain=[::ffff:127.0.0.1]; Path=/");
+        const cj = new CookieJar();
+        const c = Cookie.parse("a=b; Domain=[::ffff:127.0.0.1]; Path=/");
         assert.strictEqual(c.hostOnly, null);
         assert.instanceOf(c.creation, Date);
         assert.strictEqual(c.lastAccessed, null);
@@ -241,8 +241,8 @@ vows
     },
     "Setting a classic IPv6 cookie": {
       topic: function() {
-        let cj = new CookieJar();
-        let c = Cookie.parse("a=b; Domain=[2001:4860:4860::8888]; Path=/");
+        const cj = new CookieJar();
+        const c = Cookie.parse("a=b; Domain=[2001:4860:4860::8888]; Path=/");
         assert.strictEqual(c.hostOnly, null);
         assert.instanceOf(c.creation, Date);
         assert.strictEqual(c.lastAccessed, null);
@@ -263,8 +263,8 @@ vows
     },
     "Setting a short IPv6 cookie": {
       topic: function() {
-        let cj = new CookieJar();
-        let c = Cookie.parse("a=b; Domain=[2600::]; Path=/");
+        const cj = new CookieJar();
+        const c = Cookie.parse("a=b; Domain=[2600::]; Path=/");
         assert.strictEqual(c.hostOnly, null);
         assert.instanceOf(c.creation, Date);
         assert.strictEqual(c.lastAccessed, null);
@@ -287,9 +287,9 @@ vows
   .addBatch({
     "Store eight cookies": {
       topic: function() {
-        let cj = new CookieJar();
-        let ex = "http://example.com/index.html";
-        let tasks = [];
+        const cj = new CookieJar();
+        const ex = "http://example.com/index.html";
+        const tasks = [];
         tasks.push(next => {
           cj.setCookie("a=1; Domain=example.com; Path=/", ex, at(0), next);
         });
@@ -344,7 +344,7 @@ vows
           // expired via Max-Age
           cj.setCookie("h=8; Domain=example.com; Path=/; Max-Age=1", ex, next);
         });
-        let cb = this.callback;
+        const cb = this.callback;
         async.parallel(tasks, (err, results) => {
           setTimeout(() => {
             cb(err, cj, results);
@@ -363,7 +363,7 @@ vows
         },
         "get a nodejs cookie": function(cookies) {
           assert.lengthOf(cookies, 1);
-          let cookie = cookies[0];
+          const cookie = cookies[0];
           assert.equal(cookie.domain, "nodejs.org");
         }
       },
@@ -373,7 +373,7 @@ vows
           cj.getCookies("https://example.com", { secure: true }, this.callback);
         },
         "get a secure example cookie with others": function(cookies) {
-          let names = cookies.map(c => {
+          const names = cookies.map(c => {
             return c.key;
           });
           assert.deepEqual(names, ["a", "b", "c", "e"]);
@@ -385,7 +385,7 @@ vows
           cj.getCookies("https://example.com", this.callback);
         },
         "get a secure example cookie with others": function(cookies) {
-          let names = cookies.map(c => {
+          const names = cookies.map(c => {
             return c.key;
           });
           assert.deepEqual(names, ["a", "b", "c", "e"]);
@@ -397,7 +397,7 @@ vows
           cj.getCookies("http://example.com", this.callback);
         },
         "get a bunch of cookies": function(cookies) {
-          let names = cookies.map(c => {
+          const names = cookies.map(c => {
             return c.key;
           });
           assert.deepEqual(names, ["a", "b", "e"]);
@@ -409,7 +409,7 @@ vows
           cj.getCookies("http://EXAMPlE.com", this.callback);
         },
         "get a bunch of cookies": function(cookies) {
-          let names = cookies.map(c => {
+          const names = cookies.map(c => {
             return c.key;
           });
           assert.deepEqual(names, ["a", "b", "e"]);
@@ -421,7 +421,7 @@ vows
           cj.getCookies("http://example.com", { http: false }, this.callback);
         },
         "get a bunch of cookies": function(cookies) {
-          let names = cookies.map(c => {
+          const names = cookies.map(c => {
             return c.key;
           });
           assert.deepEqual(names, ["a", "e"]);
@@ -433,7 +433,7 @@ vows
           cj.getCookies("http://example.com/foo/bar", this.callback);
         },
         "get a bunch of cookies": function(cookies) {
-          let names = cookies.map(c => {
+          const names = cookies.map(c => {
             return c.key;
           });
           assert.deepEqual(names, ["d", "a", "b", "e"]);
@@ -469,7 +469,7 @@ vows
           cj.getCookies("http://www.example.com/foo/bar", this.callback);
         },
         "get a bunch of cookies": function(cookies) {
-          let names = cookies.map(c => {
+          const names = cookies.map(c => {
             return c.key;
           });
           assert.deepEqual(names, ["d", "a", "b"]); // note lack of 'e'
@@ -480,12 +480,12 @@ vows
   .addBatch({
     "Repeated names": {
       topic: function() {
-        let cb = this.callback;
-        let cj = new CookieJar();
-        let ex = "http://www.example.com/";
-        let sc = cj.setCookie;
-        let tasks = [];
-        let now = Date.now();
+        const cb = this.callback;
+        const cj = new CookieJar();
+        const ex = "http://www.example.com/";
+        const sc = cj.setCookie;
+        const tasks = [];
+        const now = Date.now();
         tasks.push(sc.bind(cj, "aaaa=xxxx", ex, at(0)));
         tasks.push(
           sc.bind(cj, "aaaa=1111; Domain=www.example.com", ex, at(1000))
@@ -511,11 +511,11 @@ vows
       },
       "then getting 'em back": {
         topic: function(t) {
-          let cj = t.cj;
+          const cj = t.cj;
           cj.getCookies("http://www.example.com/pathA", this.callback);
         },
         "there's just three": function(err, cookies) {
-          let vals = cookies.map(c => {
+          const vals = cookies.map(c => {
             return c.value;
           });
           // may break with sorting; sorting should put 3333 first due to longest path:
@@ -528,7 +528,7 @@ vows
     "CookieJar setCookie errors": {
       "public-suffix domain": {
         topic: function() {
-          let cj = new CookieJar();
+          const cj = new CookieJar();
           cj.setCookie(
             "i=9; Domain=kyoto.jp; Path=/",
             "http://kyoto.jp",
@@ -543,7 +543,7 @@ vows
       },
       "wrong domain": {
         topic: function() {
-          let cj = new CookieJar();
+          const cj = new CookieJar();
           cj.setCookie(
             "j=10; Domain=google.com; Path=/",
             "http://google.ca",
@@ -558,12 +558,12 @@ vows
       },
       "old cookie is HttpOnly": {
         topic: function() {
-          let cb = this.callback;
-          let next = function(err, c) {
+          const cb = this.callback;
+          const next = function(err, c) {
             c = null;
             return cb(err, cj);
           };
-          let cj = new CookieJar();
+          const cj = new CookieJar();
           cj.setCookie(
             "k=11; Domain=example.ca; Path=/; HttpOnly",
             "http://example.ca",
@@ -577,8 +577,8 @@ vows
         },
         "but when trying to overwrite": {
           topic: function(cj) {
-            let cb = this.callback;
-            let next = function(err, c) {
+            const cb = this.callback;
+            const next = function(err, c) {
               c = null;
               cb(null, err);
             };
@@ -607,8 +607,8 @@ vows
       },
       "similar to public suffix": {
         topic: function() {
-          let cj = new CookieJar();
-          let url = "http://www.foonet.net";
+          const cj = new CookieJar();
+          const url = "http://www.foonet.net";
           assert.isTrue(cj.rejectPublicSuffixes);
           cj.setCookie("l=13; Domain=foonet.net; Path=/", url, this.callback);
         },
@@ -622,12 +622,12 @@ vows
   .addBatch({
     "Loose Mode": {
       topic: function() {
-        let cj = new CookieJar(null, { looseMode: true });
+        const cj = new CookieJar(null, { looseMode: true });
         cj.setCookieSync("FooBar", "http://www.foonet.net", {});
         return cj;
       },
       "parses loose cookies": function(cj) {
-        let cookies = cj.getCookiesSync("http://www.foonet.net");
+        const cookies = cj.getCookiesSync("http://www.foonet.net");
         assert.strictEqual(cookies.length, 1);
         assert.strictEqual(cookies[0].key, "");
         assert.strictEqual(cookies[0].value, "FooBar");
@@ -635,12 +635,12 @@ vows
     },
     "Loose Mode Cloned": {
       topic: function() {
-        let cj = new CookieJar(null, { looseMode: true });
+        const cj = new CookieJar(null, { looseMode: true });
         return CookieJar.fromJSON(cj.toJSON());
       },
       "parses loose cookies from serialized cookie jar": function(cj) {
         cj.setCookieSync("FooBar", "http://www.foonet.net", {});
-        let cookies = cj.getCookiesSync("http://www.foonet.net");
+        const cookies = cj.getCookiesSync("http://www.foonet.net");
         assert.strictEqual(cookies.length, 1);
         assert.strictEqual(cookies[0].key, "");
         assert.strictEqual(cookies[0].value, "FooBar");
@@ -650,15 +650,15 @@ vows
   .addBatch({
     "Remove all cookies": {
       topic: function() {
-        let jar = new CookieJar();
-        let cookie1 = Cookie.parse("a=b; Domain=example.com; Path=/");
-        let cookie2 = Cookie.parse("a=b; Domain=foo.com; Path=/");
-        let cookie3 = Cookie.parse("foo=bar; Domain=foo.com; Path=/");
+        const jar = new CookieJar();
+        const cookie1 = Cookie.parse("a=b; Domain=example.com; Path=/");
+        const cookie2 = Cookie.parse("a=b; Domain=foo.com; Path=/");
+        const cookie3 = Cookie.parse("foo=bar; Domain=foo.com; Path=/");
         jar.setCookie(cookie1, "http://example.com/index.html", () => {});
         jar.setCookie(cookie2, "http://foo.com/index.html", () => {});
         jar.setCookie(cookie3, "http://foo.com/index.html", () => {});
 
-        let cb = this.callback;
+        const cb = this.callback;
         jar.removeAllCookies(err => {
           cb(err, jar);
         });
@@ -679,16 +679,16 @@ vows
     },
     "Remove all cookies (the underlying store does not support removeAllCookies)": {
       topic: function() {
-        let jar = new CookieJar();
+        const jar = new CookieJar();
         jar.store.removeAllCookies = undefined;
-        let cookie1 = Cookie.parse("a=b; Domain=example.com; Path=/");
-        let cookie2 = Cookie.parse("a=b; Domain=foo.com; Path=/");
-        let cookie3 = Cookie.parse("foo=bar; Domain=foo.com; Path=/");
+        const cookie1 = Cookie.parse("a=b; Domain=example.com; Path=/");
+        const cookie2 = Cookie.parse("a=b; Domain=foo.com; Path=/");
+        const cookie3 = Cookie.parse("foo=bar; Domain=foo.com; Path=/");
         jar.setCookie(cookie1, "http://example.com/index.html", () => {});
         jar.setCookie(cookie2, "http://foo.com/index.html", () => {});
         jar.setCookie(cookie3, "http://foo.com/index.html", () => {});
 
-        let cb = this.callback;
+        const cb = this.callback;
         jar.removeAllCookies(err => {
           cb(err, jar);
         });
@@ -712,7 +712,7 @@ vows
     "Issue 132 - setCookie": {
       "with foreign object": {
         topic: function() {
-          let jar = new CookieJar();
+          const jar = new CookieJar();
           jar.setCookie(
             { key: "x", value: "y" },
             "http://example.com/",
@@ -730,7 +730,7 @@ vows
       },
       "with String instance": {
         topic: function() {
-          let jar = new CookieJar();
+          const jar = new CookieJar();
           jar.setCookie(
             new String("x=y; Domain=example.com; Path=/"),
             "http://example.com/",
@@ -750,8 +750,8 @@ vows
     "Issue #144 - secure": {
       "of undefined": {
         topic: function() {
-          let jar = new tough.CookieJar();
-          let cookieString = `AWSELB=69b2c0038b16e8e27056d1178e0d556c;
+          const jar = new tough.CookieJar();
+          const cookieString = `AWSELB=69b2c0038b16e8e27056d1178e0d556c;
           Path=/, jses_WS41=5f8dc2f6-ea37-49de-8dfa-b58336c2d9ce; path=/;
           Secure; HttpOnly, AuthToken=EFKFFFCH@K@GHIHEJCJMMGJM>CDHDEK>CFGK?MHJ
           >>JI@B??@CAEHBJH@H@A@GCFDLIMLJEEJEIFGALA?BIM?@G@DEDI@JE?I?HKJBIDDHJMEFEFM
@@ -778,7 +778,7 @@ vows
     "Issue #145 - Missing parameter validation on setCookie function causes TypeError": {
       "with missing parameters": {
         topic: function() {
-          let jar = new tough.CookieJar();
+          const jar = new tough.CookieJar();
           jar.setCookie(
             undefined,
             undefined,
@@ -799,7 +799,7 @@ vows
     "Issue #197 - CookieJar().setCookie crashes when empty cookie is passed": {
       "with missing parameters": {
         topic: function() {
-          let jar = new tough.CookieJar();
+          const jar = new tough.CookieJar();
           jar.setCookie("", "https://google.com", this.callback);
         },
         "results in a error being returned because of missing parameters": function(
@@ -815,7 +815,7 @@ vows
     "Issue #282 - Prototype pollution": {
       "when setting a cookie with the domain __proto__": {
         topic: function() {
-          let jar = new tough.CookieJar(undefined, {
+          const jar = new tough.CookieJar(undefined, {
             rejectPublicSuffixes: false
           });
           // try to pollute the prototype
@@ -830,7 +830,7 @@ vows
           this.callback();
         },
         "results in a cookie that is not affected by the attempted prototype pollution": function() {
-          let pollutedObject = {};
+          const pollutedObject = {};
           assert(pollutedObject["/notauth"] === undefined);
         }
       }
