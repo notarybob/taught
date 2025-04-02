@@ -29,11 +29,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 "use strict";
-const vows = require("vows");
-const assert = require("assert");
-const tough = require("../dist/cookie");
-const Cookie = tough.Cookie;
-const CookieJar = tough.CookieJar;
+var vows = require("vows");
+var assert = require("assert");
+var tough = require("../dist/cookie");
+var Cookie = tough.Cookie;
+var CookieJar = tough.CookieJar;
 
 function toKeyArray(cookies) {
   return cookies.map(c => {
@@ -46,9 +46,9 @@ vows
   .addBatch({
     "Assumptions:": {
       ".creationIndex is set during construction": function() {
-        const now = new Date();
-        const c1 = new Cookie();
-        const c2 = new Cookie();
+        var now = new Date();
+        var c1 = new Cookie();
+        var c2 = new Cookie();
         assert.isNumber(c1.creationIndex);
         assert.isNumber(c2.creationIndex);
         assert(
@@ -58,9 +58,9 @@ vows
       },
 
       ".creationIndex is set during construction (forced ctime)": function() {
-        const now = new Date();
-        const c1 = new Cookie({ creation: now });
-        const c2 = new Cookie({ creation: now });
+        var now = new Date();
+        var c1 = new Cookie({ creation: now });
+        var c2 = new Cookie({ creation: now });
         assert.strictEqual(c1.creation, c2.creation);
         assert.isNumber(c1.creationIndex);
         assert.isNumber(c2.creationIndex);
@@ -71,13 +71,13 @@ vows
       },
 
       ".creationIndex is left alone during new setCookie": function() {
-        const jar = new CookieJar();
-        const c = new Cookie({ key: "k", value: "v", domain: "example.com" });
-        const now = new Date();
-        const beforeDate = c.creation;
+        var jar = new CookieJar();
+        var c = new Cookie({ key: "k", value: "v", domain: "example.com" });
+        var now = new Date();
+        var beforeDate = c.creation;
         assert.instanceOf(beforeDate, Date);
         assert.notStrictEqual(now, beforeDate);
-        const beforeIndex = c.creationIndex;
+        var beforeIndex = c.creationIndex;
         assert.isNumber(c.creationIndex);
 
         jar.setCookieSync(c, "http://example.com/", { now: now });
@@ -87,16 +87,16 @@ vows
       },
 
       ".creationIndex is preserved during update setCookie": function() {
-        const jar = new CookieJar();
+        var jar = new CookieJar();
 
-        const thisMs = Date.now();
-        const t1 = new Date(thisMs);
-        const t2 = new Date(thisMs);
+        var thisMs = Date.now();
+        var t1 = new Date(thisMs);
+        var t2 = new Date(thisMs);
         assert.notStrictEqual(t1, t2); // Date objects are distinct
 
         let c = new Cookie({ key: "k", value: "v1", domain: "example.com" });
         jar.setCookieSync(c, "http://example.com/", { now: t1 });
-        const originalIndex = c.creationIndex;
+        var originalIndex = c.creationIndex;
 
         assert.strictEqual(c.creation, t1);
         assert.strictEqual(c.lastAccessed, t1);
@@ -144,8 +144,8 @@ vows
   .addBatch({
     "Changing creation date affects sorting": {
       topic: function() {
-        const cookies = [];
-        const now = Date.now();
+        var cookies = [];
+        var now = Date.now();
         cookies.push(Cookie.parse("a=0;"));
         cookies.push(Cookie.parse("b=1;"));
         cookies.push(Cookie.parse("c=2;"));
