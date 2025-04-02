@@ -30,18 +30,18 @@
  */
 
 "use strict";
-const vows = require("vows");
-const assert = require("assert");
-const tough = require("../dist/cookie");
-const Cookie = tough.Cookie;
+var vows = require("vows");
+var assert = require("assert");
+var tough = require("../dist/cookie");
+var Cookie = tough.Cookie;
 
 function matchVows(func, table) {
-  const theVows = {};
+  var theVows = {};
   table.forEach(item => {
-    const str = item[0];
-    const dom = item[1];
-    const expect = item[2];
-    const label = str + (expect ? " matches " : " doesn't match ") + dom;
+    var str = item[0];
+    var dom = item[1];
+    var expect = item[2];
+    var label = str + (expect ? " matches " : " doesn't match ") + dom;
     theVows[label] = function() {
       assert.equal(func(str, dom), expect);
     };
@@ -50,10 +50,10 @@ function matchVows(func, table) {
 }
 
 function transformVows(fn, table) {
-  const theVows = {};
+  var theVows = {};
   table.forEach(item => {
-    const str = item[0];
-    const expect = item[1];
+    var str = item[0];
+    var expect = item[1];
     let label = `${str} gives ${expect}`;
     if (item.length >= 3) {
       label += ` (${item[2]})`;
