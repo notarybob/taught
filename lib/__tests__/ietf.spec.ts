@@ -39,10 +39,10 @@ import { parseDate } from '../cookie/parseDate'
 describe('IETF http state tests', () => {
   describe('Set/get cookie tests', () => {
     it.each(parserData)(`$test`, (testCase) => {
-      const jar = new CookieJar()
-      const expected = testCase.sent
-      const sentFrom = `http://home.example.org/cookie-parser?${testCase.test}`
-      const sentTo =
+      let jar = new CookieJar()
+      let expected = testCase.sent
+      let sentFrom = `http://home.example.org/cookie-parser?${testCase.test}`
+      let sentTo =
         'sent-to' in testCase
           ? url.resolve('http://home.example.org', testCase['sent-to'])
           : `http://home.example.org/cookie-parser-result?${testCase.test}`
@@ -51,14 +51,14 @@ describe('IETF http state tests', () => {
         jar.setCookieSync(cookieStr, sentFrom, { ignoreError: true })
       })
 
-      const actual = jar.getCookiesSync(sentTo, { sort: true }) as Array<{
+      let actual = jar.getCookiesSync(sentTo, { sort: true }) as Array<{
         key: string
         value: string
       }>
 
       expect(actual.length).toBe(expected.length)
       actual.forEach((actualCookie, idx) => {
-        const expectedCookie = expected[idx]
+        let expectedCookie = expected[idx]
         if (!expectedCookie) {
           throw new Error('This should not be undefined')
         }
@@ -73,7 +73,7 @@ describe('IETF http state tests', () => {
       `ietf_data/dates/examples: $test`,
       ({ test, expected }) => {
         if (expected) {
-          const date = parseDate(test)
+          let date = parseDate(test)
           if (!date) {
             throw new Error('This should have parsed')
           }
@@ -88,7 +88,7 @@ describe('IETF http state tests', () => {
       `ietf_data/dates/bsd_examples: $test`,
       ({ test, expected }) => {
         if (expected) {
-          const date = parseDate(test)
+          let date = parseDate(test)
           if (!date) {
             throw new Error('This should have parsed')
           }
