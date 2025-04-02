@@ -1,14 +1,14 @@
 import type { Cookie } from '../cookie/cookie'
 import { CookieJar } from '../cookie/cookieJar'
 
-const url = 'http://www.example.com'
+let url = 'http://www.example.com'
 
 describe('Regression Tests', () => {
   it('should handle trailing semi-colons', async () => {
-    const cookieJar = new CookieJar()
+    let cookieJar = new CookieJar()
     await cookieJar.setCookie('broken_path=testme; path=/;', url)
     await cookieJar.setCookie('b=2; Path=/;;;;', url)
-    const cookies = await cookieJar.getCookies(url)
+    let cookies = await cookieJar.getCookies(url)
     expect(cookies).toEqual([
       expect.objectContaining({
         key: 'broken_path',
@@ -24,8 +24,8 @@ describe('Regression Tests', () => {
   })
 
   it('should not throw exception on malformed URI (GH-32)', async () => {
-    const malformedUri = `${url}/?test=100%`
-    const cookieJar = new CookieJar()
+    let malformedUri = `${url}/?test=100%`
+    let cookieJar = new CookieJar()
     await cookieJar.setCookie('Test=Test', malformedUri)
     await expect(cookieJar.getCookieString(malformedUri)).resolves.toBe(
       'Test=Test',
@@ -34,9 +34,9 @@ describe('Regression Tests', () => {
 
   it('should allow setCookie (without options) callback works even if it is not instanceof Function (GH-158/GH-175)', () => {
     expect.assertions(2)
-    const cookieJar = new CookieJar()
+    let cookieJar = new CookieJar()
 
-    const callback = function (err: null, cookie: Cookie): void {
+    let callback = function (err: null, cookie: Cookie): void {
       expect(err).toBeNull()
       expect(cookie).toEqual(
         expect.objectContaining({
@@ -56,9 +56,9 @@ describe('Regression Tests', () => {
 
   it('getCookies (without options) callback works even if it is not instanceof Function (GH-175)', async () => {
     expect.assertions(2)
-    const cookieJar = new CookieJar()
+    let cookieJar = new CookieJar()
 
-    const callback = function (err: null, cookie: Cookie): void {
+    let callback = function (err: null, cookie: Cookie): void {
       expect(err).toBeNull()
       expect(cookie).toEqual([
         expect.objectContaining({
@@ -78,7 +78,7 @@ describe('Regression Tests', () => {
   })
 
   it('should allow setCookie with localhost (GH-215)', async () => {
-    const cookieJar = new CookieJar()
+    let cookieJar = new CookieJar()
     await expect(
       cookieJar.setCookie('a=b; Domain=localhost', 'http://localhost'),
     ).resolves.toEqual(
@@ -91,7 +91,7 @@ describe('Regression Tests', () => {
   })
 
   it('should allow setCookie with localhost and null domain (GH-215)', async () => {
-    const cookieJar = new CookieJar()
+    let cookieJar = new CookieJar()
     await expect(
       cookieJar.setCookie('a=b; Domain=', 'http://localhost'),
     ).resolves.toEqual(
@@ -104,7 +104,7 @@ describe('Regression Tests', () => {
   })
 
   it('setCookie with localhost (.localhost domain), (GH-215)', async () => {
-    const cookieJar = new CookieJar()
+    let cookieJar = new CookieJar()
     await expect(
       cookieJar.setCookie('a=b; Domain=.localhost', 'http://localhost'),
     ).resolves.toEqual(
