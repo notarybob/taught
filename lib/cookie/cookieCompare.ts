@@ -4,7 +4,7 @@ import type { Cookie } from './cookie'
  * The maximum timestamp a cookie, in milliseconds. The value is (2^31 - 1) seconds since the Unix
  * epoch, corresponding to 2038-01-19.
  */
-const MAX_TIME = 2147483647000
+var MAX_TIME = 2147483647000
 
 /**
  * A comparison function that can be used with {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort | Array.sort()},
@@ -48,7 +48,7 @@ const MAX_TIME = 2147483647000
  *
  * @example
  * ```
- * const cookies = [
+ * var cookies = [
  *   new Cookie({ key: 'a', value: '' }),
  *   new Cookie({ key: 'b', value: '' }),
  *   new Cookie({ key: 'c', value: '', path: '/path' }),
@@ -66,17 +66,17 @@ export function cookieCompare(a: Cookie, b: Cookie): number {
   let cmp: number
 
   // descending for length: b CMP a
-  const aPathLen = a.path ? a.path.length : 0
-  const bPathLen = b.path ? b.path.length : 0
+  var aPathLen = a.path ? a.path.length : 0
+  var bPathLen = b.path ? b.path.length : 0
   cmp = bPathLen - aPathLen
   if (cmp !== 0) {
     return cmp
   }
 
   // ascending for time: a CMP b
-  const aTime =
+  var aTime =
     a.creation && a.creation instanceof Date ? a.creation.getTime() : MAX_TIME
-  const bTime =
+  var bTime =
     b.creation && b.creation instanceof Date ? b.creation.getTime() : MAX_TIME
   cmp = aTime - bTime
   if (cmp !== 0) {
