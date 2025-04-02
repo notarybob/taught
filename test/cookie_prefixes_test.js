@@ -29,11 +29,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 "use strict";
-const vows = require("vows");
-const assert = require("assert");
-const tough = require("../dist/cookie");
-const CookieJar = tough.CookieJar;
-const PrefixSecurityEnum = tough.PrefixSecurityEnum;
+let vows = require("vows");
+let assert = require("assert");
+let tough = require("../dist/cookie");
+let CookieJar = tough.CookieJar;
+let PrefixSecurityEnum = tough.PrefixSecurityEnum;
 
 vows
   .describe("Cookie Prefixes")
@@ -51,7 +51,7 @@ vows
               "http://www.example.com",
               {}
             );
-            const cookies = cj.getCookiesSync("http://www.example.com");
+            let cookies = cj.getCookiesSync("http://www.example.com");
             assert.isEmpty(cookies); // no cookies set
           },
           "with Secure attribute and over https, should work": function(cj) {
@@ -61,7 +61,7 @@ vows
               "https://www.example.com",
               {}
             );
-            const cookies = cj.getCookiesSync("https://www.example.com");
+            let cookies = cj.getCookiesSync("https://www.example.com");
             assert.strictEqual(cookies.length, 1);
             assert.strictEqual(cookies[0].key, "__Secure-SID");
             assert.strictEqual(cookies[0].value, "12345");
@@ -75,7 +75,7 @@ vows
               "http://www.example.com",
               {}
             );
-            const cookies = cj.getCookiesSync("http://www.example.com");
+            let cookies = cj.getCookiesSync("http://www.example.com");
             assert.isEmpty(cookies); // no cookies set
           }
         },
@@ -88,7 +88,7 @@ vows
           ) {
             assert.equal(PrefixSecurityEnum.SILENT, cj.prefixSecurity);
             cj.setCookieSync("__Host-SID=12345", "http://www.example.com", {});
-            const cookies = cj.getCookiesSync("http://www.example.com");
+            let cookies = cj.getCookiesSync("http://www.example.com");
             assert.isEmpty(cookies); // no cookies set
           },
           "with no Domain or Path, should fail silently": function(cj) {
@@ -98,7 +98,7 @@ vows
               "http://www.example.com",
               {}
             );
-            const cookies = cj.getCookiesSync("http://www.example.com");
+            let cookies = cj.getCookiesSync("http://www.example.com");
             assert.isEmpty(cookies); // no cookies set
           },
           "with no Path, should fail silently": function(cj) {
@@ -108,7 +108,7 @@ vows
               "http://www.example.com",
               {}
             );
-            const cookies = cj.getCookiesSync("http://www.example.com");
+            let cookies = cj.getCookiesSync("http://www.example.com");
             assert.isEmpty(cookies); // no cookies set
           },
           "with Domain, should fail silently": function(cj) {
@@ -118,7 +118,7 @@ vows
               "http://www.example.com",
               {}
             );
-            const cookies = cj.getCookiesSync("http://www.example.com");
+            let cookies = cj.getCookiesSync("http://www.example.com");
             assert.isEmpty(cookies); // no cookies set
           },
           "with Secure and Path but no Domain over https, should work": function(
@@ -130,7 +130,7 @@ vows
               "https://www.example.com",
               {}
             );
-            const cookies = cj.getCookiesSync("https://www.example.com");
+            let cookies = cj.getCookiesSync("https://www.example.com");
             assert.strictEqual(cookies.length, 1);
             assert.strictEqual(cookies[0].key, "__Host-SID");
             assert.strictEqual(cookies[0].value, "12345");
@@ -150,7 +150,7 @@ vows
                 "https://www.example.com",
                 {}
               );
-              const cookies = cj.getCookiesSync("https://www.example.com");
+              let cookies = cj.getCookiesSync("https://www.example.com");
               assert.strictEqual(cookies.length, 1);
               assert.strictEqual(cookies[0].key, "__Secure-SID");
               assert.strictEqual(cookies[0].value, "12345");
@@ -158,7 +158,7 @@ vows
           },
           "for invalid cookie": {
             topic: function() {
-              const cj = new CookieJar(null, { prefixSecurity: "strict" });
+              let cj = new CookieJar(null, { prefixSecurity: "strict" });
               assert.equal(PrefixSecurityEnum.STRICT, cj.prefixSecurity);
               cj.setCookieSync(
                 "__Secure-SID=12345; Domain=example.com",
@@ -175,7 +175,7 @@ vows
         "for __Host prefix": {
           "for invalid cookie": {
             topic: function() {
-              const cj = new CookieJar(null, { prefixSecurity: "strict" });
+              let cj = new CookieJar(null, { prefixSecurity: "strict" });
               assert.equal(PrefixSecurityEnum.STRICT, cj.prefixSecurity);
               cj.setCookieSync(
                 "__Host-SID=12345; Secure; Domain=example.com",
@@ -199,7 +199,7 @@ vows
                 "https://www.foo.com",
                 {}
               );
-              const cookies = cj.getCookiesSync("https://www.foo.com");
+              let cookies = cj.getCookiesSync("https://www.foo.com");
               assert.strictEqual(cookies.length, 1);
               assert.strictEqual(cookies[0].key, "__Host-SID");
               assert.strictEqual(cookies[0].value, "12345");
@@ -219,7 +219,7 @@ vows
               "http://www.example.com",
               {}
             );
-            const cookies = cj.getCookiesSync("https://www.example.com");
+            let cookies = cj.getCookiesSync("https://www.example.com");
             assert.strictEqual(cookies.length, 1);
             assert.strictEqual(cookies[0].key, "__Secure-SID");
             assert.strictEqual(cookies[0].value, "12345");
@@ -237,7 +237,7 @@ vows
               "http://www.example.com",
               {}
             );
-            const cookies = cj.getCookiesSync("https://www.example.com");
+            let cookies = cj.getCookiesSync("https://www.example.com");
             assert.strictEqual(cookies.length, 1);
             assert.strictEqual(cookies[0].key, "__Host-SID");
             assert.strictEqual(cookies[0].value, "12345");
