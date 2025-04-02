@@ -30,18 +30,18 @@
  */
 
 "use strict";
-const vows = require("vows");
-const assert = require("assert");
-const tough = require("../dist/cookie");
-const Cookie = tough.Cookie;
-const CookieJar = tough.CookieJar;
-const Store = tough.Store;
-const MemoryCookieStore = tough.MemoryCookieStore;
+var vows = require("vows");
+var assert = require("assert");
+var tough = require("../dist/cookie");
+var Cookie = tough.Cookie;
+var CookieJar = tough.CookieJar;
+var Store = tough.Store;
+var MemoryCookieStore = tough.MemoryCookieStore;
 
-const domains = ["example.com", "www.example.com", "example.net"];
-const paths = ["/", "/foo", "/foo/bar"];
+var domains = ["example.com", "www.example.com", "example.net"];
+var paths = ["/", "/foo", "/foo/bar"];
 
-const isInteger =
+var isInteger =
   Number.isInteger ||
   function(value) {
     // Node 0.10 (still supported) doesn't have Number.isInteger
@@ -67,7 +67,7 @@ function setUp(context) {
   // level. This should cause the preservation of creation order in
   // getAllCookies to be exercised.
   for (let i = 0; i < paths.length; i++) {
-    const path = paths[i];
+    var path = paths[i];
     for (let j = 0; j < domains.length; j++) {
       domain = domains[j];
       c = new Cookie({
@@ -85,7 +85,7 @@ function setUp(context) {
   }
 
   // corner cases
-  const cornerCases = [
+  var cornerCases = [
     { expires: "Infinity", key: "infExp", value: "infExp" },
     { maxAge: 3600, key: "max", value: "max" },
     {
@@ -124,7 +124,7 @@ function checkMetadata(serialized) {
   assert.isArray(serialized.cookies);
 }
 
-const serializedCookiePropTypes = {
+var serializedCookiePropTypes = {
   key: "string",
   value: "string",
   expires: "isoDate", // if "Infinity" it's supposed to be missing
@@ -146,7 +146,7 @@ function validateSerializedCookie(cookie) {
   assert.isFalse(cookie instanceof Cookie);
 
   Object.keys(cookie).forEach(prop => {
-    const type = serializedCookiePropTypes[prop];
+    var type = serializedCookiePropTypes[prop];
     switch (type) {
       case "string":
       case "boolean":
@@ -183,9 +183,9 @@ vows
   .addBatch({
     "Assumptions:": {
       "serializableProperties all accounted for": function() {
-        const actualKeys = Cookie.serializableProperties.concat([]); // copy
+        var actualKeys = Cookie.serializableProperties.concat([]); // copy
         actualKeys.sort();
-        const expectedKeys = Object.keys(serializedCookiePropTypes);
+        var expectedKeys = Object.keys(serializedCookiePropTypes);
         expectedKeys.sort();
         assert.deepEqual(actualKeys, expectedKeys);
       }
@@ -194,9 +194,9 @@ vows
   .addBatch({
     "For Stores without getAllCookies": {
       topic: function() {
-        const store = new Store();
+        var store = new Store();
         store.synchronous = true;
-        const jar = new CookieJar(store);
+        var jar = new CookieJar(store);
         return jar;
       },
       "Cannot call toJSON": function(jar) {
@@ -209,9 +209,9 @@ vows
   .addBatch({
     "For async stores": {
       topic: function() {
-        const store = new MemoryCookieStore();
+        var store = new MemoryCookieStore();
         store.synchronous = false; // pretend it's async
-        const jar = new CookieJar(store);
+        var jar = new CookieJar(store);
         return jar;
       },
       "Cannot call toJSON": function(jar) {
@@ -224,7 +224,7 @@ vows
   .addBatch({
     "With a small store": {
       topic: function() {
-        const now = (this.now = new Date());
+        var now = (this.now = new Date());
         this.jar = new CookieJar();
         // domain cookie with custom extension
         let cookie = Cookie.parse("sid=one; domain=example.com; path=/; fubar");
@@ -337,12 +337,12 @@ vows
 
       "when attempting to synchornously clone to an async store": {
         topic: function(jar) {
-          const newStore = new MemoryCookieStore();
+          var newStore = new MemoryCookieStore();
           newStore.synchronous = false;
           return newStore;
         },
         "throws an error": function(newStore) {
-          const jar = this.jar;
+          var jar = this.jar;
           assert.throws(() => {
             jar.cloneSync(newStore);
           }, /^Error: CookieJar clone destination store is not synchronous; use async API instead\.$/);
